@@ -1,7 +1,7 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from ..db import SessionLocal
-from ..config import settings
-from .ingest.aggregator import run_ingest
+from app.core.database import SessionLocal
+from app.core.config import settings
+from app.services.ingest.aggregator import run_ingest
 
 scheduler = AsyncIOScheduler()
 

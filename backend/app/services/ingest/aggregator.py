@@ -3,9 +3,9 @@ from datetime import datetime
 from typing import List, Callable
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from ...schemas import RawItemIn
-from ...models import RawItem, Event, Alert
-from ...config import settings
+from app.schemas.source import RawItemIn
+from app.models.database import RawItem, Event, Alert
+from app.core.config import settings
 from ..deepseek import call_deepseek
 from ..dedup import hash_record
 from ..quota import can_fetch_source, increment_source_usage

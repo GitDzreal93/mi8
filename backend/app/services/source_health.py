@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from ..models import Source
+from app.models.database import Source
 
 async def update_source_status(session: AsyncSession, name: str, status: str, message: str = ""):
     row = await session.scalar(select(Source).where(Source.name == name))

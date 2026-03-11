@@ -1,8 +1,8 @@
 from datetime import date, datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from ..models import SourceUsage
-from ..config import settings
+from app.models.database import SourceUsage
+from app.core.config import settings
 
 LIMITS = {
     "gnews": settings.gnews_daily_limit,

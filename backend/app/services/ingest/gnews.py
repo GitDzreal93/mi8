@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
 from .base import fetch_json
-from ...config import settings
-from ...schemas import RawItemIn
+from app.core.config import settings
+from app.schemas.source import RawItemIn
 
 BASE = "https://gnews.io/api/v4/search"
 

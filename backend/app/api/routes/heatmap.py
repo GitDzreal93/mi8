@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import select, and_, desc, func
+from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from datetime import datetime, timedelta
-from ...db import get_session
-from ...models import Event
-from ...schemas import HeatPoint
+from app.core.database import get_session
+from app.models.database import Event
+from app.schemas.common import HeatPoint
 
 router = APIRouter(prefix="/heatmap", tags=["heatmap"])
 

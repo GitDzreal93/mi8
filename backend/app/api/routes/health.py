@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import date, datetime
-from ...db import get_session
-from ...models import Source, SourceUsage
-from ...config import settings
+from app.core.database import get_session
+from app.models.database import Source, SourceUsage
+from app.core.config import settings
 
 router = APIRouter()
 

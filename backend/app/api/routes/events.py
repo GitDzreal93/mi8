@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlalchemy import select, and_, desc, or_
+from sqlalchemy import select, desc, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from datetime import datetime, timedelta
-from ...db import get_session
-from ...models import Event
-from ...schemas import EventOut
+from app.core.database import get_session
+from app.models.database import Event
+from app.schemas.event import EventOut
 
 router = APIRouter(prefix="/events", tags=["events"])
 

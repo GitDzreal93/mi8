@@ -1,16 +1,9 @@
-from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel
-from ...services.auth import create_access_token
+from fastapi import APIRouter
+from app.core.security import create_access_token
+from app.schemas.common import LoginRequest, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-class LoginRequest(BaseModel):
-    username: str
-    password: str
-
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
 
 @router.post("/login", response_model=TokenResponse)
 async def login(payload: LoginRequest):

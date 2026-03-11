@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from ...db import get_session
-from ...schemas import FeedbackIn, FeedbackOut
-from ...models import Feedback, Event
+from app.core.database import get_session
+from app.schemas.common import FeedbackIn, FeedbackOut
+from app.models.database import Feedback, Event
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 

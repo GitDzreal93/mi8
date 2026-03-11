@@ -1,24 +1,46 @@
+"""SQLAlchemy database models."""
 from datetime import datetime, date
-from sqlalchemy import Column, String, Integer, DateTime, Boolean, JSON, Text, Float, ForeignKey, UniqueConstraint, Date
+from sqlalchemy import (
+    Column,
+    String,
+    Integer,
+    DateTime,
+    Date,
+    Boolean,
+    JSON,
+    Text,
+    Float,
+    ForeignKey,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import UUID
-# from geoalchemy2 import Geometry  # Disabled when PostGIS is not available
 import uuid
 
-Base = declarative_base()
+from app.core.database import Base
+
 
 class Source(Base):
+    """Data source configuration and status."""
+
     __tablename__ = "sources"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(50), unique=True, nullable=False)
     last_status = Column(String(20), default="unknown")
     last_message = Column(Text)
     last_polled_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
-    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(
+        DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
 
 class SourceUsage(Base):
+    """Track daily API usage per source."""
+
     __tablename__ = "source_usage"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     source = Column(String(50), nullable=False)
     day = Column(Date, nullable=False)
@@ -26,8 +48,12 @@ class SourceUsage(Base):
     last_used_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     __table_args__ = (UniqueConstraint("source", "day", name="uq_source_day"),)
 
+
 class RawItem(Base):
+    """Raw data items from external sources."""
+
     __tablename__ = "raw_items"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     source = Column(String(50), nullable=False)
     source_id = Column(String(200))
@@ -40,8 +66,12 @@ class RawItem(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     __table_args__ = (UniqueConstraint("source", "hash_key", name="uq_raw_source_hash"),)
 
+
 class Event(Base):
+    """Structured military events."""
+
     __tablename__ = "events"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     canonical_event_id = Column(String(64), index=True)
     source = Column(String(50), nullable=False)
@@ -63,10 +93,16 @@ class Event(Base):
     event_time = Column(DateTime(timezone=True))
     raw_id = Column(UUID(as_uuid=True), ForeignKey("raw_items.id"))
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
-    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(
+        DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
 
 class Alert(Base):
+    """Alert notifications for high-importance events."""
+
     __tablename__ = "alerts"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     event_id = Column(UUID(as_uuid=True), ForeignKey("events.id"))
     channel = Column(String(20))  # email / slack
@@ -74,10 +110,31 @@ class Alert(Base):
     sent = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
 
+
 class Feedback(Base):
+    """User feedback on events."""
+
     __tablename__ = "feedback"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     event_id = Column(UUID(as_uuid=True), ForeignKey("events.id"))
     feedback = Column(Text, nullable=False)
     user = Column(String(100))
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+
+
+class Config(Base):
+    """Application configuration settings stored in database."""
+
+    __tablename__ = "configs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    key = Column(String(100), unique=True, nullable=False, index=True)
+    value = Column(JSON, nullable=True)
+    category = Column(String(50), nullable=False, index=True)
+    description = Column(Text)
+    is_sensitive = Column(Boolean, default=False)
+    updated_at = Column(
+        DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+    updated_by = Column(String(100))

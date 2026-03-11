@@ -1,7 +1,7 @@
 from typing import List
 from datetime import datetime, timedelta
 from .base import fetch_json
-from ...schemas import RawItemIn
+from app.schemas.source import RawItemIn
 
 BASE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv"  # placeholder, FIRMS has multiple formats
 

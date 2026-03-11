@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from typing import Optional, List
 from datetime import datetime
 import httpx
-from ..config import settings
+from app.core.config import settings
 
 
 class AlertService:

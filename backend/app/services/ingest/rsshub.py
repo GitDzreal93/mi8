@@ -1,8 +1,8 @@
 from typing import List
 from datetime import datetime
 import httpx
-from ...config import settings
-from ...schemas import RawItemIn
+from app.core.config import settings
+from app.schemas.source import RawItemIn
 
 ENDPOINTS = [
     "/dod/press",  # replace with real RSSHub paths

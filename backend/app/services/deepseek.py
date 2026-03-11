@@ -3,7 +3,7 @@ import json
 from datetime import date, datetime
 from typing import Dict, Any
 import httpx
-from ..config import settings
+from app.core.config import settings
 
 _head = {"Authorization": f"Bearer {settings.deepseek_api_key}"}
 _lock = asyncio.Lock()
