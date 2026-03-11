@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.database import SourceUsage
+from app.models.source import SourceUsage
 from app.core.config import settings
 
 LIMITS = {

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from datetime import datetime, timedelta
 from app.core.database import get_session
-from app.models.database import Event
+from app.models.event import Event
 from app.schemas.common import HeatPoint
 
 router = APIRouter(prefix="/heatmap", tags=["heatmap"])

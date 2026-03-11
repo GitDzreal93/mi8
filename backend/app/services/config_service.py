@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, delete
 from datetime import datetime
 
-from app.models.database import Config
+from app.models.config import Config
 from app.core.exceptions import MI8Exception
 from app.core.config import settings as env_settings
 

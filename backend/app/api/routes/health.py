@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import date, datetime
 from app.core.database import get_session
-from app.models.database import Source, SourceUsage
+from app.models.source import Source, SourceUsage
 from app.core.config import settings
 
 router = APIRouter()

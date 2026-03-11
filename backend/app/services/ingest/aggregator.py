@@ -4,7 +4,9 @@ from typing import List, Callable
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.source import RawItemIn
-from app.models.database import RawItem, Event, Alert
+from app.models.source import RawItem
+from app.models.event import Event
+from app.models.alert import Alert
 from app.core.config import settings
 from ..deepseek import call_deepseek
 from ..dedup import hash_record

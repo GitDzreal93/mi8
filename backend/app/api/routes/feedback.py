@@ -3,7 +3,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_session
 from app.schemas.common import FeedbackIn, FeedbackOut
-from app.models.database import Feedback, Event
+from app.models.feedback import Feedback
+from app.models.event import Event
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 
