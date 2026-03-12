@@ -7,12 +7,16 @@ import { EventList } from '@/components/events/EventList'
 import { EventDetail } from '@/components/events/EventDetail'
 import { EventFilters, FilterState } from '@/components/events/EventFilters'
 import { SourceHealthList } from '@/components/sources/SourceHealth'
+import { SettingsPanel } from '@/components/settings/SettingsPanel'
+import { DataExplorer } from '@/components/data/DataExplorer'
 import { Event } from '@/lib/api'
-import { Activity, TrendingUp, AlertTriangle, Database, RefreshCw, Shield } from 'lucide-react'
+import { Activity, TrendingUp, AlertTriangle, Database, RefreshCw, Shield, Settings, FileSearch } from 'lucide-react'
+
+type TabType = 'dashboard' | 'sources' | 'data' | 'settings'
 
 export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'sources'>('dashboard')
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [filters, setFilters] = useState<FilterState>({
     hours: 24,
     importance: undefined,
@@ -43,6 +47,13 @@ export default function Home() {
 
   const eventsList = events || []
 
+  const tabs: { key: TabType; label: string; icon: React.ReactNode }[] = [
+    { key: 'dashboard', label: 'Dashboard', icon: <Activity className="w-4 h-4 mr-1.5" /> },
+    { key: 'sources', label: 'Data Sources', icon: <Database className="w-4 h-4 mr-1.5" /> },
+    { key: 'data', label: 'Data Explorer', icon: <FileSearch className="w-4 h-4 mr-1.5" /> },
+    { key: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4 mr-1.5" /> },
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -53,31 +64,26 @@ export default function Home() {
               <Shield className="w-8 h-8 text-blue-600" />
               <h1 className="text-2xl font-bold text-gray-900">Military Intelligence Dashboard</h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setActiveTab('dashboard')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === 'dashboard'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => setActiveTab('sources')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === 'sources'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                Data Sources
-              </button>
+            <div className="flex items-center space-x-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm inline-flex items-center ${
+                    activeTab === tab.key
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+              <div className="w-px h-8 bg-gray-200 mx-2" />
               <button
                 onClick={() => refreshMutation.mutate()}
                 disabled={refreshMutation.isPending}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 transition-colors flex items-center"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 transition-colors flex items-center text-sm"
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${refreshMutation.isPending ? 'animate-spin' : ''}`} />
                 Refresh
@@ -180,6 +186,12 @@ export default function Home() {
             <SourceHealthList sources={sourceHealth.sources} />
           </div>
         )}
+
+        {/* Data Explorer Tab */}
+        {activeTab === 'data' && <DataExplorer />}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && <SettingsPanel />}
       </main>
 
       {/* Event Detail Modal */}

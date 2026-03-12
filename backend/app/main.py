@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.database import init_db, close_db
-from app.api.routes import events, health, feedback, heatmap, auth, admin
+from app.api.routes import events, health, feedback, heatmap, auth, admin, raw_items
 from app.api.v1 import api_router as v1_router
 from app.services.scheduler import start_scheduler
 
@@ -41,6 +41,7 @@ app.include_router(feedback.router)
 app.include_router(heatmap.router)
 app.include_router(auth.router)
 app.include_router(admin.router)
+app.include_router(raw_items.router)
 
 # API v1 routes
 app.include_router(v1_router, prefix=settings.api_v1_prefix)
